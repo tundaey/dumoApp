@@ -11,7 +11,8 @@ import {
     SET_DAY_APPOINTMENTS,
     defaultAppointments,
     SAVE_APPOINTMENT,
-    GET_DAY_APPOINTMENTS_SUCCESS
+    GET_DAY_APPOINTMENTS_SUCCESS,
+    SET_DAY_APPOINTMENTS_SUCCESS
 } from './constants'
 
 
@@ -43,18 +44,20 @@ function updateProfileFailure(error) {
     }
 }
 
-function getDayAppointmentsSuccess(appointments) {
+function getDayAppointmentsSuccess(appointments, day) {
     return {
         type: GET_DAY_APPOINTMENTS_SUCCESS,
         appointments,
+        day,
     }
 }
 
-function setDayAppointmentsSuccess(day, appointment) {
+function setDayAppointmentsSuccess(appointment, day) {
+    console.log('set appoitnment success', appointment)
     return {
-        type: SET_DAY_APPOINTMENTS,
+        type: SET_DAY_APPOINTMENTS_SUCCESS,
+        appointment,
         day,
-        appointment
     }
 }
 
@@ -99,7 +102,7 @@ export const updateProfile = (payload) => async dispatch => {
     }
 }
 
-export const setDayAppointments = (day, time, available) => async dispatch => {
+export const setDayAppointments = (day, time, available, newAppointments) => async dispatch => {
     console.log('day', day, time, available)
 	try {
         const token = await AsyncStorage.getItem('authToken');
@@ -107,8 +110,9 @@ export const setDayAppointments = (day, time, available) => async dispatch => {
 		return api.setDayAppointments(payload, token)
 			.then(response => {
 				if (response.success) {
-                    console.log('appoitnment', response);
-					dispatch(getDayAppointments(day));
+                    console.log('appoitnment', response.appointment);
+                    dispatch(setDayAppointmentsSuccess(payload, day))
+					// dispatch(getDayAppointments(day));
 				} else {
                     console.log('Error: ', response);
                     //dispatch(updateProfileFailure('Error updating profile'))
@@ -123,44 +127,6 @@ export const setDayAppointments = (day, time, available) => async dispatch => {
 }
 
 
-// export function setDayAppointments(day, appointments) {
-//     return (dispatch) => {
-//         console.log('heyyy', day, appointments)
-//         dispatch(setDayAppointmentsSuccess(day, appointments))
-//         api.setDayAppointments(day, appointments)
-//         .then(()=> console.log('success'))
-//         .catch(()=> console.warn('fail'))
-//     }
-// }
-
-function saveAppointmentSuccess() {
-    return {
-        type: SAVE_APPOINTMENT
-    }
-}
-
-export function saveAppointment(appointment) {
-    return (dispatch, getState) => {
-        console.log('save appointment', appointment, getState().profile.profile)
-        
-        const uid = getState().profile.profile.uid
-        api.getUserData(uid)
-        .then(data => {
-            appointment['account_type'] = data.account_type
-            appointment['price'] = data.price
-            appointment['uid'] = data.uid
-            appointment['gender'] = data.gender
-            appointment['first_name'] = data.first_name
-            appointment['last_name'] = data.last_name
-            appointment['avatar'] = data.avatar
-            return appointment
-        })
-        .then(newAppointment => api.saveAppointment(newAppointment))
-        .then(()=> dispatch(saveAppointmentSuccess()))
-        .catch(()=> console.warn('fail'))
-    }
-}
-
 export const getDayAppointments = (day) => async dispatch => {
 	try {
 		const token = await AsyncStorage.getItem('authToken');
@@ -168,12 +134,7 @@ export const getDayAppointments = (day) => async dispatch => {
 			.then(response => {
                 console.log('response', response)
 				if (response.success) {
-                    console.log('appoitnments length', response.appointments.length)
-                    if (response.appointments.length <= 0) {
-                        dispatch(getDayAppointmentsSuccess(defaultAppointments));
-                    } else {
-                        dispatch(getDayAppointmentsSuccess(response.appointments));
-                    }
+                    dispatch(getDayAppointmentsSuccess(response.appointments, day));
 					
 				} else {
                     console.log('Error: ', response);

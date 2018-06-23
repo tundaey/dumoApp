@@ -50,7 +50,7 @@ class ProfileScreen extends React.Component {
     })
 
     setTimeToAvailable = (appointment, value, key)=> {
-        console.log('new value', value, appointment)
+        console.log('new value', appointment, value, key)
         // const appointments = _isEmpty(this.props.appointments) 
         //     ? this.props.defaultAppointments : this.props.appointments[this.state.currentDay.dateString]
         // const newAppointments = appointments.map(a => {
@@ -62,7 +62,8 @@ class ProfileScreen extends React.Component {
         //     return a;
         // })
         const day = this.state.currentDay.dateString;
-        const { time, available } = appointment
+        const { time } = appointment
+        const available = value;
         this.props.setDayAppointments(this.state.currentDay.dateString, time, available)
         // const newAppointment = Object.assign({}, appointment)
         // console.log('newappointment', newAppointment)
@@ -85,7 +86,7 @@ class ProfileScreen extends React.Component {
     }
 
     render() {
-        console.log('appointments to display', this.props.appointments)
+        //console.log('appointments to display', this.props.appointments)
         // const appointmentsToDisplay = _isEmpty(this.props.appointments) 
         //     ? [] : this.props.appointments[this.state.currentDay.dateString]
         
@@ -133,14 +134,14 @@ class ProfileScreen extends React.Component {
                     onPressArrowRight={addMonth => addMonth()}
                 />
             </View>
-            { !this.props.appointments ? null : (
+            { !this.props.appointments[this.state.currentDay.dateString] ? null : (
                 <View>
                     <View style={{backgroundColor: 'grey', flexDirection: 'row', padding:5}}>
                         <Text style={styles.time_header}>Time</Text>
                         <Text style={styles.event_header}>Event</Text>
                     </View>
                     <ScrollView>
-                        {this.props.appointments.map((appointment, key) => (
+                        {this.props.appointments[this.state.currentDay.dateString].map((appointment, key) => (
                             <View style={styles.agenda_container}>
                                 <Text style={styles.time_body}>{appointment.time}</Text>
                                 {

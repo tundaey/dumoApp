@@ -1,3 +1,7 @@
+import _uniq from 'lodash/uniq'
+import _uniqBy from 'lodash/uniqBy'
+import _sortBy from 'lodash/sortBy'
+
 import {
     GET_DATA_SUCCESS,
     LOADING_PROFILE,
@@ -9,7 +13,9 @@ import {
     SET_DAY_APPOINTMENTS,
     GET_DAY_APPOINTMENTS,
     GET_DAY_APPOINTMENTS_SUCCESS,
-} from './constants'
+    SET_DAY_APPOINTMENTS_SUCCESS,
+} from './constants';
+
 
 const defaultState = {
     loading: true,
@@ -31,7 +37,7 @@ const defaultState = {
         {time:"20:00", available: false}, 
         {time:"21:00", available: false},
     ],
-    calendar: [],
+    calendar: {},
 }
 
 const ACTION_HANDLERS = {
@@ -64,18 +70,37 @@ const ACTION_HANDLERS = {
         profileUpdated: false
     }),
 
-    [SET_DAY_APPOINTMENTS]: (state, {appointments, day}) => ({
+    [SET_DAY_APPOINTMENTS]: state => ({
         ...state,
-        calendar: {
-            ...state.calendar,
-            [day]: appointments
-        }
     }),
 
-    [GET_DAY_APPOINTMENTS_SUCCESS]: (state, {appointments}) => ({
-        ...state,
-        calendar: appointments
-    })
+    [SET_DAY_APPOINTMENTS_SUCCESS]: (state, { appointment, day }) => {
+        const payload = { time: appointment.time, available: appointment.available }
+        //const combinedAppointments = [...state.calendar[day] , ...state.calendarDefault.concat(payload)];
+        const newAppointments = [appointment]
+        const combinedAppointments = [...newAppointments, ...state.calendar[day]];
+        console.log('combinedAppointment', _sortBy(_uniqBy(combinedAppointments, 'time'), 'time'))
+        return {
+            ...state,
+            calendar: {
+                ...state.calendar,
+                [day]: _sortBy(_uniqBy(combinedAppointments, 'time'), 'time')
+            }
+        }
+    },
+
+    [GET_DAY_APPOINTMENTS_SUCCESS]: (state, {appointments, day}) => {
+        const combinedAppointments = [...appointments, ...state.calendarDefault];
+        const newAppointments = _uniqBy(combinedAppointments, 'time');
+        return {
+            ...state,
+            calendar: {
+                [day]: appointments.length <= 0 
+                    ? state.calendarDefault 
+                    : newAppointments
+            }
+        }
+    }
 
 }
 
