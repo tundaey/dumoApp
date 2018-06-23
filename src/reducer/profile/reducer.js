@@ -55,11 +55,8 @@ const ACTION_HANDLERS = {
 
     [UPDATE_PROFILE_SUCCESS]: (state, { payload }) => ({
         ...state,
-        profile: {
-            ...state.profile,
-            payload,
-        },
-        profileUpdated: true
+        profile: payload,
+        // profileUpdated: true
     }),
 
     [UPDATE_PROFILE_FAILURE]: (state, {error}) => ({

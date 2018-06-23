@@ -84,6 +84,7 @@ export const updateProfile = (payload) => async dispatch => {
 		return api.updateProfile(payload, token)
 			.then(response => {
 				if (response.success) {
+                    console.log('user', response.user)
 					dispatch(updateProfileSucessful(response.user));
 				} else {
                     console.log('Error: ', response);
