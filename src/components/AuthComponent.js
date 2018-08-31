@@ -5,7 +5,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/FontAwesome";
 import IOSIcon from "react-native-vector-icons/Ionicons";
 import { Button } from 'react-native-elements'
-import { TabNavigator, TabBarBottom, DrawerNavigator, StackNavigator } from 'react-navigation';
+import {
+    TabNavigator,
+    TabBarBottom,
+    DrawerNavigator,
+    StackNavigator,
+    withNavigation } from 'react-navigation';
 import { logOut } from '../helpers/api'
 import SearchScreen from './screens/Search'
 import ProfileScreen from './screens/Profile'
@@ -13,6 +18,12 @@ import HomeScreen from './screens/Home'
 import ChatScreen from './screens/Chats'
 import SearchResults from './screens/SearchResults'
 import LogoutComponent from './LogoutComponent'
+import DismissableStackNavigator from './DismissableStackNavigator';
+import Schedule from './screens/Schedule';
+import Agenda from './Agenda';
+import CreateBooking from './screens/CreateBooking'
+import ViewUser from './screens/ViewUser'
+import BookingDetails from './screens/BookingDetails'
 
 
 const tabNav = TabNavigator(
@@ -43,12 +54,17 @@ const tabNav = TabNavigator(
     
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Ionicons name={iconName} size={25} color={tintColor} />;
+                return <Ionicons name={iconName} size={20} color={tintColor} />;
             },
         }),
         tabBarOptions: {
-            activeTintColor: 'tomato',
+            activeTintColor: 'rgb(45,156,219)',
             inactiveTintColor: 'gray',
+            style: {
+                backgroundColor: '#ffffff',
+                height: 40,
+                paddingTop: 5
+             }
         },
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
@@ -57,6 +73,19 @@ const tabNav = TabNavigator(
     }
     
 )
+
+const DrawerNavigatorConfig = { 
+    contentOptions: {
+        onItemPress: function(route){
+            console.log('route', route)
+        }
+    },
+    activeTintColor: 'rgb(45,156,219)',
+    inactiveTintColor: 'rgb(45,156,219)',
+    style:{
+        color: 'rgb(45,156,219)'
+    }
+}
 
 const drawernav = DrawerNavigator({
     Account: {
@@ -114,14 +143,45 @@ const drawernav = DrawerNavigator({
             drawerLabel: "Feedback",
             drawerIcon: ({ tintColor }) => <Icon name="envelope-open" size={24} />
         },
+    },
+    Logout: {
+        screen: tabNav,
+        navigationOptions: {
+            drawerLabel: "Logout",
+            drawerIcon: ({ tintColor }) => <Ionicons name="ios-power" size={24} />
+        },
     }
-}, { contentOptions: {
-    onItemPress: function(route){
-        console.log('route')
-    }
-}});
+}, DrawerNavigatorConfig);
 
-
-
-export default drawernav
+const ModalStackNavigator = StackNavigator({
+        drawer:          { screen: drawernav },
+        SearchResults: DismissableStackNavigator({screen: SearchResults}, {
+            mode: 'modal',
+        }),
+        Schedule: DismissableStackNavigator({screen: Schedule}, {
+            mode: 'modal',
+        }),
+        Agenda: DismissableStackNavigator({screen: Agenda}, {
+            mode: 'modal',
+        }),
+        ViewUser: DismissableStackNavigator({screen: ViewUser}, {
+            mode: 'modal',
+        }),
+        CreateBooking: DismissableStackNavigator({screen: CreateBooking}, {
+            mode: 'modal',
+        }),
+        BookingDetails: DismissableStackNavigator({screen: BookingDetails}, {
+            mode: 'modal',
+        }),
+    }, 
+    {
+        headerMode: 'none',
+        mode:       'modal'
+    });
+// SearchResults: DismissableStackNavigator({screen: SearchResults}, {
+    //   mode: 'modal', // Remember to set the root navigator to display modally.
+    //   //headerMode: 'none', // This ensures we don't get two top bars.
+    // })
+//export default drawernav
+export default ModalStackNavigator
 

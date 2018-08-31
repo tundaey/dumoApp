@@ -38,6 +38,10 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		B719202E212023B4000ACE61 /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7192028212023B4000ACE61 /* TPSCardFieldManager.m */; };
+		B719202F212023B4000ACE61 /* TPSError.m in Sources */ = {isa = PBXBuildFile; fileRef = B719202A212023B4000ACE61 /* TPSError.m */; };
+		B7192030212023B4000ACE61 /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = B719202B212023B4000ACE61 /* TPSCardField.m */; };
+		B7192031212023B4000ACE61 /* TPSStripeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B719202C212023B4000ACE61 /* TPSStripeManager.m */; };
 		B729DBC720D9790F00F45D9C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B729DBBC20D9790F00F45D9C /* Octicons.ttf */; };
 		B729DBC820D9790F00F45D9C /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B729DBBD20D9790F00F45D9C /* Feather.ttf */; };
 		B729DBC920D9790F00F45D9C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B729DBBE20D9790F00F45D9C /* Entypo.ttf */; };
@@ -49,6 +53,8 @@
 		B729DBCF20D9790F00F45D9C /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B729DBC420D9790F00F45D9C /* EvilIcons.ttf */; };
 		B729DBD020D9790F00F45D9C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B729DBC520D9790F00F45D9C /* SimpleLineIcons.ttf */; };
 		B729DBD120D9790F00F45D9C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B729DBC620D9790F00F45D9C /* MaterialIcons.ttf */; };
+		B7BB41E020FB6B0A00F817D8 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7BB41B720FB6AD800F817D8 /* libBVLinearGradient.a */; };
+		F2E208BA14299579F14FCA3F /* libPods-dumoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF08ED13FA12849BC9DB108A /* libPods-dumoApp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -325,12 +331,33 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
+		B719203621202400000ACE61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B719203221202400000ACE61 /* TPSStripe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A3A7F1A1DC27B520030F9DC;
+			remoteInfo = TPSStripe;
+		};
 		B729DBD620D97A2100F45D9C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B729DBD220D97A2100F45D9C /* RNVectorIcons.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
+		};
+		B7BB41B620FB6AD800F817D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7BB41B120FB6AD700F817D8 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = BVLinearGradient;
+		};
+		B7BB41B820FB6AD800F817D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7BB41B120FB6AD700F817D8 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -361,6 +388,16 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		AF08ED13FA12849BC9DB108A /* libPods-dumoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dumoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7192026212023B4000ACE61 /* TPSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSError.h; sourceTree = "<group>"; };
+		B7192027212023B4000ACE61 /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
+		B7192028212023B4000ACE61 /* TPSCardFieldManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardFieldManager.m; sourceTree = "<group>"; };
+		B7192029212023B4000ACE61 /* TPSStripeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSStripeManager.h; sourceTree = "<group>"; };
+		B719202A212023B4000ACE61 /* TPSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSError.m; sourceTree = "<group>"; };
+		B719202B212023B4000ACE61 /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
+		B719202C212023B4000ACE61 /* TPSStripeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSStripeManager.m; sourceTree = "<group>"; };
+		B719202D212023B4000ACE61 /* TPSCardFieldManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardFieldManager.h; sourceTree = "<group>"; };
+		B719203221202400000ACE61 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TPSStripe.xcodeproj; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; };
 		B729DBBC20D9790F00F45D9C /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		B729DBBD20D9790F00F45D9C /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
 		B729DBBE20D9790F00F45D9C /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
@@ -373,6 +410,9 @@
 		B729DBC520D9790F00F45D9C /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		B729DBC620D9790F00F45D9C /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		B729DBD220D97A2100F45D9C /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		B7BB41B120FB6AD700F817D8 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		C8C1AA46E04312DAC9AE62A7 /* Pods-dumoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dumoApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-dumoApp/Pods-dumoApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D07BF6DB77F2CC28E2D7665C /* Pods-dumoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dumoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-dumoApp/Pods-dumoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -388,6 +428,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7BB41E020FB6B0A00F817D8 /* libBVLinearGradient.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -401,6 +442,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				F2E208BA14299579F14FCA3F /* libPods-dumoApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +531,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0DEE30D6B4CCA69CFDBEA2E5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C8C1AA46E04312DAC9AE62A7 /* Pods-dumoApp.debug.xcconfig */,
+				D07BF6DB77F2CC28E2D7665C /* Pods-dumoApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		139105B71AF99BAD00B5F7CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -550,6 +601,7 @@
 			isa = PBXGroup;
 			children = (
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
+				AF08ED13FA12849BC9DB108A /* libPods-dumoApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -575,6 +627,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				B719203221202400000ACE61 /* TPSStripe.xcodeproj */,
+				B7BB41B120FB6AD700F817D8 /* BVLinearGradient.xcodeproj */,
 				B729DBD220D97A2100F45D9C /* RNVectorIcons.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -604,12 +658,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B7192025212023B4000ACE61 /* TPSStripe */,
 				B729DBBB20D9790F00F45D9C /* Fonts */,
 				13B07FAE1A68108700A75B9A /* dumoApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dumoAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				0DEE30D6B4CCA69CFDBEA2E5 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -632,6 +688,30 @@
 			children = (
 				ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */,
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B7192025212023B4000ACE61 /* TPSStripe */ = {
+			isa = PBXGroup;
+			children = (
+				B7192026212023B4000ACE61 /* TPSError.h */,
+				B7192027212023B4000ACE61 /* TPSCardField.h */,
+				B7192028212023B4000ACE61 /* TPSCardFieldManager.m */,
+				B7192029212023B4000ACE61 /* TPSStripeManager.h */,
+				B719202A212023B4000ACE61 /* TPSError.m */,
+				B719202B212023B4000ACE61 /* TPSCardField.m */,
+				B719202C212023B4000ACE61 /* TPSStripeManager.m */,
+				B719202D212023B4000ACE61 /* TPSCardFieldManager.h */,
+			);
+			name = TPSStripe;
+			path = "../node_modules/tipsi-stripe/ios/TPSStripe";
+			sourceTree = "<group>";
+		};
+		B719203321202400000ACE61 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B719203721202400000ACE61 /* libTPSStripe.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -663,6 +743,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B7BB41B220FB6AD700F817D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7BB41B720FB6AD800F817D8 /* libBVLinearGradient.a */,
+				B7BB41B920FB6AD800F817D8 /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -688,10 +777,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "dumoApp" */;
 			buildPhases = (
+				98BA42A687F82D3B2F5E614B /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				A6CA62098CDACA7231AC21B0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -775,6 +866,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = B7BB41B220FB6AD700F817D8 /* Products */;
+					ProjectRef = B7BB41B120FB6AD700F817D8 /* BVLinearGradient.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -825,6 +920,10 @@
 				{
 					ProductGroup = B729DBD320D97A2100F45D9C /* Products */;
 					ProjectRef = B729DBD220D97A2100F45D9C /* RNVectorIcons.xcodeproj */;
+				},
+				{
+					ProductGroup = B719203321202400000ACE61 /* Products */;
+					ProjectRef = B719203221202400000ACE61 /* TPSStripe.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1097,11 +1196,32 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B719203721202400000ACE61 /* libTPSStripe.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTPSStripe.a;
+			remoteRef = B719203621202400000ACE61 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B729DBD720D97A2100F45D9C /* libRNVectorIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = B729DBD620D97A2100F45D9C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B7BB41B720FB6AD800F817D8 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = B7BB41B620FB6AD800F817D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B7BB41B920FB6AD800F817D8 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = B7BB41B820FB6AD800F817D8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1180,6 +1300,42 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		98BA42A687F82D3B2F5E614B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-dumoApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6CA62098CDACA7231AC21B0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-dumoApp/Pods-dumoApp-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-dumoApp/Pods-dumoApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1195,7 +1351,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B719202E212023B4000ACE61 /* TPSCardFieldManager.m in Sources */,
+				B7192030212023B4000ACE61 /* TPSCardField.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				B719202F212023B4000ACE61 /* TPSError.m in Sources */,
+				B7192031212023B4000ACE61 /* TPSStripeManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1284,6 +1444,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8C1AA46E04312DAC9AE62A7 /* Pods-dumoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1302,6 +1463,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D07BF6DB77F2CC28E2D7665C /* Pods-dumoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;

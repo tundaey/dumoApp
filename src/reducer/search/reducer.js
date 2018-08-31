@@ -22,6 +22,7 @@ const ACTION_HANDLERS = {
     [SEARCH_APPOINTMENTS_SUCCESSFUL]: (state, { payload }) => ({
         ...state,
         searchResults: payload,
+        loading: false,
     }),
 
 }

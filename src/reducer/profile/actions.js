@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import * as api from '../../helpers/api'
+import { logout } from '../auth/actions'
 
 import {
     GET_DATA_FAILURE,
@@ -73,6 +74,7 @@ export const getUserData = () => async dispatch => {
                     dispatch(getUserDataSucessful(response.user))
                 } else {
                     dispatch(getUserDataFailure("Error fetching User Data"))
+                    dispatch(logout())
                 }
             } )
         .catch(error => dispatch(getUserDataFailure(error)))

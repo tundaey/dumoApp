@@ -13,9 +13,6 @@ export function authenticateUser() {
 export function signInWithEmail(email, password) {
     return axios.post(`${API_URL}/signin`, { email, password })
     .then(data => console.log('data', data))
-    // return firebase.auth().signInWithEmailAndPassword(email, password)
-    // .then(({ _user }) => getUserData(_user.uid))
-    // .catch(error => ({error: 'There was an error signing in. Please try again'}))
 }
 
 
@@ -55,11 +52,6 @@ export function setDayAppointments(payload, token) {
         });
 }
 
-export function saveAppointment(appointment) {
-    return firebase.firestore().collection('bookings').add(appointment)
-    //return firebase.database().ref(`bookings`).push(appointment)
-}
-
 export function getDayAppointments(day, token) {
     return fetch(`${API_URL}/api/auth/profile/appointments/${day}`, {
         method: 'GET',
@@ -75,14 +67,96 @@ export function getDayAppointments(day, token) {
         });
 }
 
-export function searchAppointments(params) {
-    console.log('params', params)
-    return firebase.firestore().collection('bookings')
-    .where("day", "==", params.date)
-    .where("time", "==", params.time)
-    //.where("account_type", "==", "trainer")
-    .get()
-    .then(data => data.docs)
+export function searchAppointments(params, token) {
+    return fetch(`${API_URL}/api/auth/appointments/search`, {
+        method: 'POST',
+        body: JSON.stringify({ params }),
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
+}
+
+export function getUsers(token) {
+    return fetch(`${API_URL}/api/auth/users`, {
+        method: 'GET',
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
+}
+
+export function setAvailableAppointments(params, token) {
+    return fetch(`${API_URL}/api/auth/appointments/${params.date}`, {
+        method: 'POST',
+        body: JSON.stringify({ ...params }),
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
+}
+
+export function getAppointments(day, token) {
+    return fetch(`${API_URL}/api/auth/profile/appointments`, {
+        method: 'GET',
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
+}
+
+export function getUserAppointments(email, token) {
+    return fetch(`${API_URL}/api/auth/user/${email}/appointments`, {
+        method: 'GET',
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
+}
+
+export function getUserDayAppointments(email, day, token) {
+    return fetch(`${API_URL}/api/auth/appointments/${day}/${email}`, {
+        method: 'GET',
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
 }
 
 export function login(email, password) {
@@ -126,7 +200,6 @@ export function refreshToken(refreshToken) {
 
 
 export function updateProfile(payload, token) {
-    console.log('updated profile', payload, token)
     return fetch(`${API_URL}/api/auth/profile`, {
         method: 'PUT',
         headers: {
@@ -140,4 +213,34 @@ export function updateProfile(payload, token) {
         .catch(error => {
             throw error;
         });
+}
+
+export const initializePaymentForAppointment = (payload, token) => {
+    return fetch(`${API_URL}/api/auth/pay/create`, {
+        method: 'POST',
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token
+        },
+        body: JSON.stringify(payload),
+    })
+        .then(response => response.json())
+        // .then(handleTokenErrors)
+        .catch(error => {
+            throw error;
+        });
+}
+
+export function getBookings(token, type) {
+    return axios.get(`${API_URL}/api/auth/bookings`, {
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token,
+        },
+        params: {
+            type,
+        }
+    })
+    .then((({ data }) => data))
+    .catch(error => error)
 }

@@ -102,7 +102,15 @@ export const checkAuthStatus = () => async dispatch => {
 		const authToken = await AsyncStorage.getItem('authToken');
 		const refreshToken = await AsyncStorage.getItem('refreshToken');
 		if (authToken != null && refreshToken != null) {
-			dispatch(setLoginSuccess(authToken, refreshToken));
+			api.getUserData(authToken)
+				.then(response => {
+						if (response.success) {
+							dispatch(setLoginSuccess(authToken, refreshToken));
+						} else {
+								dispatch(logout())
+						}
+				} )
+			
 		}
 		return authToken;
 	} catch (error) {

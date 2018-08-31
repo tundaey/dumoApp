@@ -1,16 +1,39 @@
 import React from 'react';
+import { Header } from 'react-navigation';
 import { StyleSheet, Platform, Image, Text, View, ScrollView, TouchableOpacity, Dimensions, Switch } from 'react-native';
 import { connect } from 'react-redux'
+import _find from 'lodash/find'
+import { Icon, Button } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import IOSIcon from "react-native-vector-icons/Ionicons";
 import LogoutComponent  from '../LogoutComponent';
 import { logout } from '../../reducer/auth/actions';
 import { TabNavigator, TabBarBottom, DrawerNavigator, StackNavigator } from 'react-navigation';
-import { Calendar, CalendarList} from 'react-native-calendars'
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
 import moment from 'moment';
 import { setDayAppointments, getDayAppointments, saveAppointment } from '../../reducer/profile/actions'
 import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
+import _upperFirst from 'lodash/upperFirst'
+import LinearGradient from 'react-native-linear-gradient';
+import StarRating from 'react-native-star-rating';
+import { getCurrencyValue } from '../../helpers/utils'
+import { getAppointments } from '../../reducer/appointments/actions'
+import { getUserAppointments } from '../../reducer/appointments/selectors'
+import { getProfile } from '../../reducer/profile/selectors'
+import AppointmentCalendar from '../Calendar/Calendar'
+
+const GradientHeader = props => (
+    <View style={{ backgroundColor: '#eee', marginBottom: 60 }}>
+        <LinearGradient
+          start={{x: 0.0, y: 0.5}} end={{x: 1.0, y: 0.5}} locations={[0.0, 1.0]}
+          colors={['#ffffff', '#ffffff']}
+          style={[StyleSheet.absoluteFill, { height: Header.HEIGHT }]}
+        >
+          <Header {...props} />
+        </LinearGradient>
+      </View>
+    )
 
 
 const DetailsTab = () => TabNavigator({
@@ -20,17 +43,11 @@ const DetailsTab = () => TabNavigator({
 
 const StackDetails = () => StackNavigator({Details: DetailsTab})
 
-//bookings
-    //["2018-05": [{time: "3:00", booked_by: {name: "Tunde", uid: "12345"}}]]
-    //if the time is not present in the list show unavailable for that time
-    //if the date is not found, show unavailable for all times listed
-
-//on set to available -- get the month and day, get the time, set available to true
-//save the available date to bookings with uid of the trainer
-//save the available date to the users bookings
-
 class ProfileScreen extends React.Component {
 
+    componentDidMount() {
+        this.props.getAppointments()
+    }
 
     state = {
         date: moment(new Date, 'YYYY-MM-DD'),
@@ -40,44 +57,27 @@ class ProfileScreen extends React.Component {
     }
 
     static navigationOptions = ({ navigation })=> ({
+        header: props => <GradientHeader {...props} />,
+        headerStyle: {
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            paddingRight: 10, paddingLeft: 10,
+        },
         headerLeft:(
             <TouchableOpacity onPress={() => navigation.navigate("DrawerOpen")}>
-                <IOSIcon name="ios-menu" size={30} />
+                <IOSIcon color="rgb(45,156,219)"  name="ios-menu" size={30} />
             </TouchableOpacity>
-            ),
-        headerStyle: { paddingRight: 10, paddingLeft: 10 },
-        headerRight: <LogoutComponent navigation={navigation}/>
+        ),
+        // headerLeft: <LogoutComponent navigation={navigation}/>,
+        headerTitle: (
+            <Text style={{ color: 'rgb(45,156,219)', fontWeight: '600'}}>Profile</Text>
+        ),
     })
 
-    setTimeToAvailable = (appointment, value, key)=> {
-        console.log('new value', appointment, value, key)
-        // const appointments = _isEmpty(this.props.appointments) 
-        //     ? this.props.defaultAppointments : this.props.appointments[this.state.currentDay.dateString]
-        // const newAppointments = appointments.map(a => {
-        //     if(a.time === appointment.time ) {
-        //         let b = Object.assign({}, a);
-        //         b.available = value
-        //         return b
-        //     }
-        //     return a;
-        // })
-        const day = this.state.currentDay.dateString;
-        const { time } = appointment
-        const available = value;
-        this.props.setDayAppointments(this.state.currentDay.dateString, time, available)
-        // const newAppointment = Object.assign({}, appointment)
-        // console.log('newappointment', newAppointment)
-        // newAppointment.available = value;
-        // newAppointment['day'] = this.state.currentDay.dateString;
-        // console.log('new appointment', newAppointment)
-        // if(value) this.props.dispatch(saveAppointment(newAppointment))
-    }
-
-    debounceInput = _debounce(() => {
-        //this.checkTransferFields();
-        console.log('debounced')
-        this.props.dispatch(setDayAppointments(this.state.currentDay.dateString, this.state.appointments))
-      }, 1000)
 
     showDayAppointments = (day)=> {
         console.log('selected day', day)
@@ -85,83 +85,131 @@ class ProfileScreen extends React.Component {
             ()=> this.props.getDayAppointments(day.dateString))
     }
 
-    render() {
-        //console.log('appointments to display', this.props.appointments)
-        // const appointmentsToDisplay = _isEmpty(this.props.appointments) 
-        //     ? [] : this.props.appointments[this.state.currentDay.dateString]
+    openScheduler(day, appointments, navigation) {
+        //console.log('this props', this.props)
+        const getDay = _find(appointments, (o) => o.day === day.dateString)
+       
+        if (!getDay) {
+            navigation.navigate("Schedule", {date: day})
+        }else {
+            navigation.navigate("Agenda", {date: day, appointments})
+        }
         
+    }
+
+    render() {
         return (
         <View style={{flex: 1, flexDirection: 'column'}}>
-            <View style={{marginTop: 40}}><Text>Profile Details</Text></View>
-            <View>
-                <Calendar
-                    // Initially visible month. Default = Date()
-                    //current={this.state.date}
-                    // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-                    minDate={'2012-05-10'}
-                    //current={'2012-05-10'}
-                    // Handler which gets executed on day press. Default = undefined
-                    onDayPress={(day) => this.showDayAppointments(day)}
-                    markedDates={
-                        {
-                         [this.state.currentDay.dateString]: {selected: true,},
-                        }
-                    }
-                    // Handler which gets executed on day long press. Default = undefined
-                    onDayLongPress={(day) => {console.log('selected day', day)}}
-                    // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-                    monthFormat={'yyyy MM'}
-                    // Handler which gets executed when visible month changes in calendar. Default = undefined
-                    onMonthChange={(month) => {console.log('month changed', month)}}
-                    // Hide month navigation arrows. Default = false
-                    //hideArrows={true}
-                    // Replace default arrows with custom ones (direction can be 'left' or 'right')
-                    //renderArrow={(direction) => (<Arrow />)}
-                    // Do not show days of other months in month page. Default = false
-                    hideExtraDays={true}
-                    // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
-                    // day from another month that is visible in calendar page. Default = false
-                    //disableMonthChange={true}
-                    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
-                    firstDay={1}
-                    // Hide day names. Default = false
-                    hideDayNames={true}
-                    // Show week numbers to the left. Default = false
-                    showWeekNumbers={true}
-                    // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-                    onPressArrowLeft={substractMonth => substractMonth()}
-                    // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-                    onPressArrowRight={addMonth => addMonth()}
+            <View style={{height: 150}}>
+                <Image
+                    style={{
+                        flex: 1,
+                        alignSelf: 'stretch',
+                        width: undefined,
+                        height: undefined
+                    }}
+                    source={require('./gym2.jpg')}
                 />
             </View>
-            { !this.props.appointments[this.state.currentDay.dateString] ? null : (
-                <View>
-                    <View style={{backgroundColor: 'grey', flexDirection: 'row', padding:5}}>
-                        <Text style={styles.time_header}>Time</Text>
-                        <Text style={styles.event_header}>Event</Text>
+            <View >
+                <LinearGradient  colors={['#2ec0de', '#68e0cf']}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', padding: 10 }}>
+                        <View>
+                            <Text style={{ color: '#fff', fontSize: 16}}>
+                                {`${this.props.profile.first_name} ${this.props.profile.last_name}`}
+                            </Text>
+                        </View>
+                        <StarRating
+                            disabled={false}
+                            starSize={15}
+                            maxStars={5}
+                            rating={4}
+                            fullStarColor={'#fff'}
+                            containerStyle={{ paddingVertical: 10 }}
+                        />
                     </View>
-                    <ScrollView>
-                        {this.props.appointments[this.state.currentDay.dateString].map((appointment, key) => (
-                            <View style={styles.agenda_container}>
-                                <Text style={styles.time_body}>{appointment.time}</Text>
-                                {
-                                    appointment.booked_by 
-                                    ? <Text style={styles.event_body}>{appointment.booked_by}</Text> 
-                                    : <View style={{flexDirection: 'row', flex: 1, marginLeft: 30}}>
-                                        <Text>{appointment.available ? 'Available' : 'Unavailable'}</Text>
-                                        <View style={{marginLeft: 5, marginTop: -5}}>
-                                            <Switch
-                                                onValueChange={(value)=> this.setTimeToAvailable(appointment, value, key)} 
-                                                value={appointment.available}/>
-                                        </View>
-                                    </View>
-                                }
-                                
+                    <View style={{paddingRight: 80, paddingLeft: 80, paddingBottom: 10}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <View >
+                                <Icon
+                                    name='sword-cross'
+                                    type='material-community'
+                                    size={14}
+                                    color={'#fff'}
+                                />
+                                <Text style={{fontSize:14, color: '#fff', marginTop: 2.5}}>
+                                    {_upperFirst(this.props.profile.account_type)}
+                                </Text>
                             </View>
-                        ))}
-                    </ScrollView>
-                </View>
-            )}
+                            <View >
+                                <Icon
+                                    name='ios-pricetag-outline'
+                                    type='ionicon'
+                                    size={14}
+                                    color={'#fff'}
+                                />
+                                <Text style={{fontSize:14, color: '#fff'}}>
+                                    {getCurrencyValue(this.props.profile.price)}
+                                </Text>
+                            </View>
+                            <View >
+                                <Icon
+                                    name='dumbbell'
+                                    type='material-community'
+                                    size={14}
+                                    color={'#fff'}
+                                />
+                                <Text style={{fontSize:14, color: '#fff'}}>{150}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </LinearGradient>
+            </View>
+            
+            <View style={{flexDirection: 'row'}}>
+                <Button
+                    style={{marginTop: 10, marginBottom: 10, width: 65 }}
+                    buttonStyle={{padding: 5}}
+                    fontSize={10}
+                    borderRadius={20}
+                    backgroundColor={'#fff'}
+                    color={'#000'}
+                    title='Pictures' 
+                />
+                <Button
+                    style={{marginTop: 10, marginBottom: 10, width: 65}}
+                    buttonStyle={{padding: 5}}
+                    borderRadius={20}
+                    fontSize={10}
+                    backgroundColor={'#fff'}
+                    color={'#000'}
+                    title='Bio' 
+                />
+                <Button
+                    style={{marginTop: 10, marginBottom: 10, width: 65}}
+                    buttonStyle={{padding: 5}}
+                    borderRadius={20}
+                    fontSize={10}
+                    backgroundColor={'#000'}
+                    title='Diary' 
+                />
+                <Button
+                    style={{marginTop: 10, marginBottom: 10, width: 65}}
+                    buttonStyle={{padding: 5}}
+                    borderRadius={20}
+                    fontSize={10}
+                    backgroundColor={'#fff'}
+                    color={'#000'}
+                    title='Previews' 
+                />
+            </View>
+            <View>
+                <AppointmentCalendar
+                    openScheduler={this.openScheduler}
+                    appointments={this.props.appointments}
+                    navigation={this.props.navigation}
+                />
+            </View>
         </View>
         );
     }
@@ -224,11 +272,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     defaultAppointments: state.profile.calendarDefault,
-    appointments: state.profile.calendar
+    appointments: getUserAppointments(state),
+    profile: getProfile(state),
 })
 
 export default connect(mapStateToProps, {
     logout,
     getDayAppointments,
-    setDayAppointments
+    setDayAppointments,
+    getAppointments,
 })(ProfileScreen)

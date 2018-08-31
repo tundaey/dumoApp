@@ -25,12 +25,20 @@ class AuthContainer extends React.Component {
     componentDidMount() {
         // AsyncStorage.clear()
         //this.props.getUserData(firebase.auth().currentUser.uid)
+        console.log('loading profile', this.props.profile)
         this.props.checkAuthStatus().then(loggedIn => {
             if(!loggedIn) this.props.navigation.navigate('Auth')
             if(loggedIn) {
-                //console.log('uid', firebase.auth().currentUser.uid)
+                console.log('loggedIN', loggedIn)
                 //this.props.getUserData(firebase.auth().currentUser.uid)
                 this.props.navigation.navigate('Update')
+                // if(this.props.profile){
+                //     if(this.props.profile.loading) {
+                //         return <ActivityIndicator /> 
+                //     }
+                //     this.props.navigation.navigate('App')
+                // }
+                
             }
         })
         // this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
@@ -66,13 +74,21 @@ class AuthContainer extends React.Component {
     render() {
         console.log('auth container profile', this.props)
         if(this.props.profile) {
-            return this.props.profile.profileComplete 
-            ? this.props.navigation.navigate('App') 
-            : this.props.navigation.navigate('Update')
+            if(this.props.profile.loading) {
+                return <ActivityIndicator /> 
+            }else {
+                return this.props.profile.profileComplete 
+                ? this.props.navigation.navigate('App')
+                : null 
+                //: this.props.navigation.navigate('Update')
+            }
+        }else {
+            console.log('SHOW LOADING INDICATOR')
+            return (
+                <ActivityIndicator /> 
+            );
         }
-        return (
-            <ActivityIndicator /> 
-        );
+        
     }
 }
 

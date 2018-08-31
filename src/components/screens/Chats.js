@@ -9,13 +9,19 @@ import { Button } from 'react-native-elements'
 
 class ChatScreen extends React.Component {
   static navigationOptions = ({ navigation })=> ({
-      headerLeft:(
+      headerRight:(
           <TouchableOpacity onPress={() => navigation.navigate("DrawerOpen")}>
-              <IOSIcon name="ios-menu" size={30} />
+              <IOSIcon color="white" containerStyle={{marginRight: 10}} name="ios-menu" size={30} />
           </TouchableOpacity>
       ),
-      headerRight: <LogoutComponent navigation={navigation}/>,
-      headerStyle: { paddingRight: 10, paddingLeft: 10 }
+      headerLeft: <LogoutComponent navigation={navigation}/>,
+      headerTitle: (
+        <Image
+            source={require('./weightlifting.png')}
+            style={{marginBottom: 10}}
+        />
+      ),
+      headerStyle: { paddingRight: 10, paddingLeft: 10, backgroundColor: '#fff' },
   })
 
   render() {
