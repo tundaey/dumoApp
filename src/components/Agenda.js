@@ -35,11 +35,14 @@ class AgendaScreen extends Component {
       return {
           headerLeft:(
               <TouchableOpacity onPress={() => params.dismiss()}>
-                  <IOSIcon name="ios-arrow-back" size={30} />
+                  <IOSIcon name="ios-arrow-back" color="rgb(45,156,219)" size={30} />
               </TouchableOpacity>
               ),
-          headerStyle: { paddingRight: 10, paddingLeft: 10 },
-          title: `${date}`,
+          headerStyle: { paddingRight: 10, paddingLeft: 10, backgroundColor: '#fff' },
+          headerTitle: (
+            <Text style={{ color: 'rgb(45,156,219)', fontWeight: '600'}}>{`Pick Time on ${date}`}</Text>
+          ),
+          //title: `Pick Time on ${date}`,
       }
   }
 
@@ -85,11 +88,25 @@ class AgendaScreen extends Component {
   renderItem(item) {
     return (
       <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.time}</Text>
+        <View flexDirection="column" style={{marginBottom: 10, marginLeft: 12}}>
+          <View flexDirection="row" style={{marginRight: 20}}>
+            <IOSIcon name="ios-time" color="rgb(45,156,219)" size={20} />
+            <Text style={{marginLeft: 10}}>{item.time}</Text>
+          </View>
+          <View flexDirection="row">
+            <IOSIcon name="md-timer" color="rgb(45,156,219)" size={20} />
+            <Text style={{marginLeft: 10}}>{'30 minutes'}</Text>
+          </View>
+        </View>
+        
         {item.booked ? <Text>Booked</Text> : (
-          <Button 
-            onPress={this.gotoBookAppointmentPage.bind(this, item)} 
-            backgroundColor="#000" title="Book Appointment" 
+          <Button
+            onPress={this.gotoBookAppointmentPage.bind(this, item)}
+            buttonStyle={{height: 30, padding: 0, width: 140}}
+            color="#fff"
+            backgroundColor="rgb(45,156,219)" 
+            title="Book Slot"
+            rounded
           />
         )}
       </View>

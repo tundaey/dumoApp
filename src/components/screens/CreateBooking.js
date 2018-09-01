@@ -31,11 +31,14 @@ stripe.setOptions({
         return {
             headerLeft:(
                 <TouchableOpacity onPress={() => params.dismiss()}>
-                    <IOSIcon name="ios-arrow-back" size={30} />
+                    <IOSIcon name="ios-arrow-back" color="rgb(45,156,219)" size={30} />
                 </TouchableOpacity>
                 ),
-            headerStyle: { paddingRight: 10, paddingLeft: 10 },
-            title: `Confirm your Appointment`,
+            headerStyle: { paddingRight: 10, paddingLeft: 10, backgroundColor: '#fff' },
+            headerTitle: (
+                <Text style={{ color: 'rgb(45,156,219)', fontWeight: '600'}}>{'Confirm your Appointment'}</Text>
+            ),
+            //title: `Confirm your Appointment`,
         }
     }
 
@@ -66,23 +69,19 @@ stripe.setOptions({
         if(customer_id) {
             console.log('customer id', customer_id)
             this.props.initializePaymentForAppointment(payload)
-            .then((res) => this.navigation.navigate('Bookings'))
+            .then((res) => this.props.navigation.navigate('Home'))
             .catch((err)=> console.warn('err', err))
         }else {
             stripe.paymentRequestWithCardForm()
             .then((response)=> this.props.initializePaymentForAppointment(payload))
-            .then((res) => console.log('pay res', res) )
+            .then((res) => this.props.navigation.navigate('Home'))
             .catch((err)=> console.warn('err', err))
         }
         
     }
 
     render() {
-      // Name of the Trainer
-      // Price
-      // Date
-      // Time
-      // Button Confirm and Pay 
+      
       const params = this.props.navigation.state.params
         return (
             <View style={{ flex: 1, padding: 30, backgroundColor: '#fff' }}>
@@ -90,10 +89,13 @@ stripe.setOptions({
                  <Text>Date of Appoinment: {params.date}</Text>
                  <Text>Time of Appoinment: {params.time}</Text>
                  <Text>Cost £{params.price}</Text>
-                 <Button 
+                  <Button
                     onPress={this.payWithStripe}
                     style={{marginTop: 20}}
-                    backgroundColor="#000" title="Confirm Booking" 
+                    color="#fff"
+                    backgroundColor="rgb(45,156,219)" 
+                    title="Confirm Booking"
+                    rounded
                   />
             </View>
         )
