@@ -109,7 +109,7 @@ class Bookings extends React.Component {
             isTrainer
         })
         if(acceptedData) data.push(acceptedData)
-        this.props.navigation.navigate('BookingDetails', { booking, data })
+        this.props.navigation.navigate('BookingDetails', { booking, data, user_id })
     }
 
     renderScene = ({ route }) => {

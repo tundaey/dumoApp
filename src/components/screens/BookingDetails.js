@@ -21,7 +21,45 @@ const GradientHeader = props => (
         <Header {...props} />
       </LinearGradient>
     </View>
-  )
+)
+
+const AppointmentCard = (user, accountType) => (
+    <React.Fragment>
+        <Avatar
+            small
+            rounded
+            source={{uri: user.avatar}}
+            activeOpacity={0.7}
+        />
+        <View>
+            <Text style={{fontWeight: '700', color:'rgb(45,156,219)'}}>
+                    Appointment Requested
+            </Text>
+            <View>
+                <Text style={{fontWeight: '700'}}>
+                    Tunde has received your appointment but has not confirmed
+                </Text>
+                <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <Button
+                        buttonStyle={{height: 30, padding: 0, width: 80}}
+                        textStyle={{fontSize: 10}}
+                        outline
+                        icon={{name: 'chat', color: 'rgb(45,156,219)'}}
+                        color="rgb(45,156,219)"
+                        rounded
+                        title='Chat' />
+                    <Button
+                        buttonStyle={{height: 30, padding: 0, width: 80}}
+                        textStyle={{fontSize: 10}}
+                        color="white"
+                        backgroundColor="#ff6347"
+                        rounded
+                        title='Accept' />
+                </View>
+            </View>
+        </View>
+    </React.Fragment>
+)
 
   class BookingDetails extends React.Component {
 
@@ -169,6 +207,9 @@ const GradientHeader = props => (
       // Time
       // Button Confirm and Pay 
       const params = this.props.navigation.state.params
+      console.log('params data', params.data, params.booking)
+      const { booking } = params;
+      const { trainer, user, user_id } = booking;
         return (
             <View style={{ flex: 1, marginTop: 100, padding: 30, backgroundColor: '#fff' }}>
                  <Card>
@@ -181,8 +222,15 @@ const GradientHeader = props => (
                         </Text>
                      </View>
                  </Card>
+
+                 <Card>
+                    { user._id === user_id 
+                        ? <AppointmentCard user={user}/> 
+                        : <AppointmentCard user={trainer}/> 
+                    }
+                 </Card>
                  {/* <View> */}
-                    <Timeline
+                    {/* <Timeline
                         data={params.data}
                         renderDetail={this.renderDetail}
                         circleSize={20}
@@ -202,7 +250,7 @@ const GradientHeader = props => (
                         }}
                         innerCircle={'dot'}
                         style={{ marginTop: 10, marginLeft: 15}}
-                    />
+                    /> */}
                  {/* </View> */}
             </View>
         )
