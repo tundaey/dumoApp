@@ -36,8 +36,9 @@ class Bookings extends React.Component {
     state = {
         index: 0,
         routes: [
-        { key: 'from_you', title: 'From You' },
-        { key: 'to_you', title: 'To You' },
+        { key: 'confirmed', title: 'Confirmed' },
+        { key: 'pending', title: 'Pending' },
+        { key: 'past', title: 'Past' },
         ],
     };
 
@@ -69,65 +70,34 @@ class Bookings extends React.Component {
 
     logOut = () => console.log('log ou tplacehilder')
 
-    onViewBooking = (booking) => {
-        
+    onViewBooking = (booking, key) => {
         const user_id = this.props.user._id;
-        const data = [{time: '08:00', title: 'Appointment Requested', description: ''}];
-        const isTrainer = user_id === booking.trainer._id;
-        let confirmed;
-        let acceptedData;
-        const name = `${booking.user.first_name} ${booking.user.last_name}`
-        const trainer_name = `${booking.trainer.first_name} ${booking.trainer.last_name}`
-        let confirmDescription;
-        const acceptedDescription = `${name} has accepted your request.`;
-        if(booking.status === 'created') {
-            confirmed = false;
-            confirmDescription = isTrainer 
-            ? `${name} has requested your services, click the accept button to confirm` 
-            : `${trainer_name} has received your request but has not confirmed`;
-        }
-        if(booking.status === 'confirmed') {
-            confirmed = true;
-            confirmDescription = isTrainer 
-            ? `You have accepted this request` 
-            : `${trainer_name} has accepted your request`;
-            acceptedData = {
-                time: booking.time,
-                title: 'Booking Accepted',
-                confirmed, 
-                description: acceptedDescription, 
-                imageUrl: booking.user.avatar,
-                isTrainer,
-            }
-        }
-        data.push({
-            time: booking.time,
-            title: 'Confirm Booking',
-            confirmed, 
-            description: confirmDescription, 
-            imageUrl: booking.user.avatar,
-            isTrainer
-        })
-        if(acceptedData) data.push(acceptedData)
-        this.props.navigation.navigate('BookingDetails', { booking, data, user_id })
+        this.props.navigation.navigate('BookingDetails', { booking, user_id, key })
     }
+
+    // acceptBooking = (booking, key) => {
+    //     const user_id = this.props.user._id;
+    //     this.props.navigation.navigate('BookingDetails', { booking, user_id, key })
+    // }
 
     renderScene = ({ route }) => {
         switch (route.key) {
-            case 'from_you':
+            case 'confirmed':
             return (
                 <FromUser
                     bookings={this.props.bookings}
                     viewBooking={this.onViewBooking}
-                    loading={this.props.fromYouBookingsLoading} 
+                    loading={this.props.fromYouBookingsLoading}
+                    my_key={'confirmed'}
                 />
             )
-            case 'to_you':
+            case 'pending':
             return (
                 <FromUser
                     bookings={this.props.bookings}
                     viewBooking={this.onViewBooking}
-                    loading={this.props.fromYouBookingsLoading} 
+                    loading={this.props.fromYouBookingsLoading}
+                    my_key={'pending'}
                 />
             );
             default:

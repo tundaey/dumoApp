@@ -23,43 +23,95 @@ const GradientHeader = props => (
     </View>
 )
 
-const AppointmentCard = (user, accountType) => (
-    <React.Fragment>
-        <Avatar
-            small
-            rounded
-            source={{uri: user.avatar}}
-            activeOpacity={0.7}
-        />
+const AppointmentCreated = (user) => (
+    
+    <View>
+        <Text style={{fontWeight: '700', color:'rgb(45,156,219)'}}>
+                Appointment Requested
+        </Text>
         <View>
-            <Text style={{fontWeight: '700', color:'rgb(45,156,219)'}}>
-                    Appointment Requested
-            </Text>
-            <View>
-                <Text style={{fontWeight: '700'}}>
-                    Tunde has received your appointment but has not confirmed
-                </Text>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                    <Button
-                        buttonStyle={{height: 30, padding: 0, width: 80}}
-                        textStyle={{fontSize: 10}}
-                        outline
-                        icon={{name: 'chat', color: 'rgb(45,156,219)'}}
-                        color="rgb(45,156,219)"
-                        rounded
-                        title='Chat' />
-                    <Button
-                        buttonStyle={{height: 30, padding: 0, width: 80}}
-                        textStyle={{fontSize: 10}}
-                        color="white"
-                        backgroundColor="#ff6347"
-                        rounded
-                        title='Accept' />
-                </View>
-            </View>
+            {user.account_type === 'to_you' 
+                ? (
+                    <React.Fragment>
+                        <Text style={{fontWeight: '700'}}>
+                            Tunde has requested your services
+                        </Text>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <Button
+                                buttonStyle={{height: 30, padding: 0, width: 80}}
+                                textStyle={{fontSize: 10}}
+                                outline
+                                icon={{name: 'chat', color: 'rgb(45,156,219)'}}
+                                color="rgb(45,156,219)"
+                                rounded
+                                title='Chat' />
+                            <Button
+                                buttonStyle={{height: 30, padding: 0, width: 80}}
+                                textStyle={{fontSize: 10}}
+                                color="white"
+                                backgroundColor="#ff6347"
+                                rounded
+                                title='Accept' />
+                        </View>
+                    </React.Fragment>
+                ) 
+                : (
+                    <React.Fragment>
+                        <Text style={{fontWeight: '700'}}>
+                            Tunde has received your appointment but has not confirmed
+                        </Text>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <Button
+                                buttonStyle={{height: 30, padding: 0, width: 80}}
+                                textStyle={{fontSize: 10}}
+                                outline
+                                icon={{name: 'chat', color: 'rgb(45,156,219)'}}
+                                color="rgb(45,156,219)"
+                                rounded
+                                title='Chat' />
+                            <Button
+                                buttonStyle={{height: 30, padding: 0, width: 80}}
+                                textStyle={{fontSize: 10}}
+                                color="white"
+                                backgroundColor="#ff6347"
+                                rounded
+                                title='Accept' />
+                        </View>
+                        </React.Fragment>
+                    )
+                }
         </View>
-    </React.Fragment>
+    </View>
 )
+
+const AppointmentCard = (user) => {
+    console.log('appointment card', user);
+    if(user.status === 'created') {
+        return (
+            <React.Fragment>
+                <Avatar
+                    small
+                    rounded
+                    source={{uri: user.avatar}}
+                    activeOpacity={0.7}
+                />
+                <AppointmentCreated {...user} />
+            </React.Fragment>
+        )
+    }
+    return (
+        <React.Fragment>
+            <Avatar
+                small
+                rounded
+                source={{uri: user.avatar}}
+                activeOpacity={0.7}
+            />
+            
+        </React.Fragment>
+    )
+}
+
 
   class BookingDetails extends React.Component {
 
@@ -68,31 +120,13 @@ const AppointmentCard = (user, accountType) => (
         to: "18:00",
     }
 
-    data = [
-        {time: '08:00', title: 'Appointment Requested', description: ''},
-        {
-            time: '08:45', 
-            title: 'Confirm Booking', 
-            description: 'Yanto has requested your services, you can contact him to confirm',
-            imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240422/20d84f6c-0fe4-11e7-8f1d-9dbc594d0cfa.jpg'
-        },
-        {
-            time: '08:45', 
-            title: 'Booking Accepted', 
-            description: 'Yanto has accepted your request, please contact him to confirm',
-            imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240422/20d84f6c-0fe4-11e7-8f1d-9dbc594d0cfa.jpg'
-        },
-      ]
-
     componentWillMount() {
         const params = this.props.navigation.state.params || {};
-        console.log('booking details', params)
         this.props.navigation.setParams({ dismiss: this.goBack });
     }
 
     static navigationOptions = ({ navigation })=> {
         const params = navigation.state.params || {};
-        console.log('booking details', params)
         return {
             header: props => <GradientHeader {...props} />,
             headerStyle: {
@@ -152,54 +186,6 @@ const AppointmentCard = (user, accountType) => (
         
     }
 
-    renderDetail(rowData, sectionID, rowID) {
-        console.log('---- row data ----', rowData)
-        let title = <Text style={[styles.title]}>{rowData.title}</Text>
-        var desc = null
-        if(rowData.description && rowData.imageUrl)
-          desc = (
-            <View style={{flexDirection:'column'}}>
-                <View style={styles.descriptionContainer}>   
-                    <Avatar
-                        small
-                        rounded
-                        source={{uri: rowData.imageUrl}}
-                        activeOpacity={0.7}
-                    />
-                <Text style={[styles.textDescription]}>{rowData.description}</Text>
-                </View>
-                <View flex={1} flexDirection="row" style={{ marginTop: 10, paddingRight: 10, marginLeft: -15}}>
-                    {rowData.isTrainer && (
-                        <Button
-                            buttonStyle={{height: 30, padding: 0, width: 80}}
-                            textStyle={{fontSize: 10}}
-                            color="white"
-                            backgroundColor="#ff6347"
-                            rounded
-                            title='Accept' />
-                    )}
-                    
-                    <Button
-                        buttonStyle={{height: 30, padding: 0, width: 80}}
-                        textStyle={{fontSize: 10}}
-                        outline
-                        icon={{name: 'chat', color: 'rgb(45,156,219)'}}
-                        color="rgb(45,156,219)"
-                        rounded
-                        title='Chat' />
-                </View>
-            </View>
-            
-          )
-    
-        return (
-          <View style={{flex:1}}>
-            {title}
-            {desc}
-          </View>
-        )
-    }
-
     render() {
       // Name of the Trainer
       // Price
@@ -207,9 +193,10 @@ const AppointmentCard = (user, accountType) => (
       // Time
       // Button Confirm and Pay 
       const params = this.props.navigation.state.params
-      console.log('params data', params.data, params.booking)
-      const { booking } = params;
-      const { trainer, user, user_id } = booking;
+      const { booking, key } = params;
+      let { trainer, user, user_id, status } = booking;
+      trainer = {...trainer, account_type: key, status};
+      user = {...user, account_type: key, status};
         return (
             <View style={{ flex: 1, marginTop: 100, padding: 30, backgroundColor: '#fff' }}>
                  <Card>
@@ -224,34 +211,11 @@ const AppointmentCard = (user, accountType) => (
                  </Card>
 
                  <Card>
-                    { user._id === user_id 
-                        ? <AppointmentCard user={user}/> 
-                        : <AppointmentCard user={trainer}/> 
+                    { key === 'from_you' 
+                        ? <AppointmentCard {...user}/> 
+                        : <AppointmentCard {...trainer}/> 
                     }
                  </Card>
-                 {/* <View> */}
-                    {/* <Timeline
-                        data={params.data}
-                        renderDetail={this.renderDetail}
-                        circleSize={20}
-                        circleColor='rgb(45,156,219)'
-                        lineColor='rgb(45,156,219)'
-                        timeContainerStyle={{minWidth:52, marginTop: -5}}
-                        timeStyle={{
-                            textAlign: 'center',
-                            // backgroundColor:'#ff9797',
-                            color:'black',
-                            padding:5,
-                            //borderRadius:13
-                        }}
-                        descriptionStyle={{color:'gray'}}
-                        options={{
-                            style:{paddingTop:5}
-                        }}
-                        innerCircle={'dot'}
-                        style={{ marginTop: 10, marginLeft: 15}}
-                    /> */}
-                 {/* </View> */}
             </View>
         )
     }

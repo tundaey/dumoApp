@@ -32,3 +32,25 @@ export const fetchBookings = (bookingType) => async dispatch => {
 		dispatch(asyncError(error));
     }
 }
+
+export const acceptBooking = (payload) => async dispatch => {
+	dispatch({type: GET_BOOKINGS})
+try {
+	const token = await AsyncStorage.getItem('authToken');
+	return api.acceptBooking(token, payload)
+		.then(response => {
+			if (response.success) {
+				console.log('success', response)
+									//dispatch(fetchBookingsSuccessful(response.bookings));
+				
+			} else {
+									// dispatch(fetchBookingsFailure('Error fetching Bookings'));
+			}
+		})
+		.catch(error => {
+			dispatch(generalError(error));
+		});
+} catch (error) {
+	dispatch(asyncError(error));
+	}
+}

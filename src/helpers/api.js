@@ -244,3 +244,15 @@ export function getBookings(token, type) {
     .then((({ data }) => data))
     .catch(error => error)
 }
+
+export function acceptBooking(token, payload) {
+    return axios.post(`${API_URL}/api/auth/bookings/accept`, {
+        headers: {
+            ...config.configHeaders,
+            Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(payload),
+    })
+    .then((({ data }) => data))
+    .catch(error => error)
+}

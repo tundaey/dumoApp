@@ -13,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/FontAwesome";
 import IOSIcon from "react-native-vector-icons/Ionicons";
 import LogoutComponent from '../LogoutComponent';
-import { Button, Card, Avatar } from 'react-native-elements';
+import { Button, Card, Avatar, List, ListItem } from 'react-native-elements';
 import moment from 'moment'
 import StarRating from 'react-native-star-rating';
 
@@ -34,8 +34,8 @@ const FromUser = props => (
         marginLeft: 20,
         marginRight: 20,
         }}>
-        { props.bookings.map(booking => (
-            <TouchableOpacity key={booking._id} onPress={()=> props.viewBooking(booking)}>
+        {/* { props.bookings.map(booking => (
+            <TouchableOpacity key={booking._id} onPress={()=> props.viewBooking(booking, props.my_key)}>
               <Card
                containerStyle={{padding: 0}}>
                 <View flexDirection="row" style={{padding: 10}}>
@@ -92,7 +92,20 @@ const FromUser = props => (
                 </View>
               </Card>
             </TouchableOpacity>
-        ))}
+        ))} */}
+        <List containerStyle={{marginBottom: 20}}>
+        {
+            props.bookings.map((booking) => (
+                console.log('hello', booking.trainer.first_name),
+            <ListItem
+                roundAvatar
+                avatar={{uri:booking.trainer.avatar}}
+                key={booking._id}
+                title={`${booking.trainer.first_name} ${booking.trainer.last_name}`}
+            />
+            ))
+        }
+        </List>
     </View>
     )
 )
